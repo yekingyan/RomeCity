@@ -20,7 +20,6 @@ cc.Class({
     },
 
     start () {
-        cc.log(this.getMoveMaxOffset())
     },
 
     getMoveMaxOffset() {
