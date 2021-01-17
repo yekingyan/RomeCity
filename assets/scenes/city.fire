@@ -3735,6 +3735,9 @@
     },
     "_enabled": true,
     "speed": 1,
+    "topShow": {
+      "__id__": 74
+    },
     "_id": "18kOTjbTpCN74II3KM40sz"
   },
   {

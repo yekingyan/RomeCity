@@ -11,11 +11,16 @@ cc.Class({
 
     properties: {
         speed: 1,
+        topShow: {  // 显示层
+            default: null,
+            type: cc.Node,
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.node.on(cc.Node.EventType.TOUCH_START, this.RemoveUI, this)
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.move, this)
     },
 
@@ -48,5 +53,10 @@ cc.Class({
         this.node.y += ly
         // 去黑边
         this.fixMove()
+    },
+    RemoveUI () {
+        this.topShow.children.forEach(element => {
+            element.destroy()
+        })
     },
 });
