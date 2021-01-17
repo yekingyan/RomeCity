@@ -52,11 +52,16 @@ cc.Class({
             default: null,
             type: cc.Prefab,
         },
+        topShow: {  // 显示层
+            default: null,
+            type: cc.Node,
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.topShow.zIndex = 1000
         this.node.children.forEach(element => {
             let newBtn = element.addComponent(cc.Button) 
             let eventHandler = new cc.Component.EventHandler()
@@ -74,22 +79,26 @@ cc.Class({
 
     onClickCity: function(event) {
         let target = event.target
+        let pos = this.topShow.convertToNodeSpaceAR(event.getLocation())
         cc.log(111, event)
-        if (target.childrenCount > 0) {
-            target.children.forEach(element => {
+        if (this.topShow.childrenCount > 0) {
+            this.topShow.children.forEach(element => {
                 element.destroy()
             })
-        } else {
-            let btn
-            let buildingName = target.name
-            let perfabsName = BUILDING_TO_PERFAB[buildingName] ? BUILDING_TO_PERFAB[buildingName] : BUILDING_TO_PERFAB.default
-            perfabsName.forEach((fabName, i) => {
-                cc.loader.loadRes(`${PREFABS_DIR_NAME}/${fabName}`, (err, prefab) => {
-                    btn = cc.instantiate(prefab)
-                    target.addChild(btn)
-                    btn.y = btn.y - i * 70
-                })
-            })
         }
+        let btnParent = new cc.Node()
+        btnParent.position = pos
+        this.topShow.addChild(btnParent)
+
+        let btn
+        let buildingName = target.name
+        let perfabsName = BUILDING_TO_PERFAB[buildingName] ? BUILDING_TO_PERFAB[buildingName] : BUILDING_TO_PERFAB.default
+        perfabsName.forEach((fabName, i) => {
+            cc.loader.loadRes(`${PREFABS_DIR_NAME}/${fabName}`, (err, prefab) => {
+                btn = cc.instantiate(prefab)
+                btnParent.addChild(btn)
+                btn.y = btn.y - i * 70
+            })
+        })
     },
 });
