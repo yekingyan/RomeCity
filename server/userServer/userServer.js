@@ -1,4 +1,7 @@
 const EXPRESS = require("express")
+const ROUTER = require("./route").ROUTER
+
+
 let app = EXPRESS()
 
 
@@ -15,7 +18,7 @@ function response(res, ret) {
 }
 
 // 跨域
-app.addListener("*", (req, res, next) => {
+app.all("*", (req, res, next) => {
     res.header("")
     res.header("Access-Control-Allow-Origin", "*")
     res.header("Access-Control-Allow-Headers", "X-Requested-With")
@@ -28,7 +31,8 @@ app.addListener("*", (req, res, next) => {
 
 
 // 路由
-app.get("/test", (req, res) => {
-    console.log("router test")
-    response(res, "aaa test")
-})
+for (i in ROUTER) {
+    func = ROUTER[i]
+    console.log(i, func)
+    app.get(i, func)
+}
